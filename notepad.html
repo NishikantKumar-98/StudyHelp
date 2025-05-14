@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Revision Whiteboard | Jagannath University</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --card-hover: rgba(255, 255, 255, 0.2);
+            --accent-primary: #ff44cc;
+            --accent-secondary: #ff6600;
+            --gradient-main: linear-gradient(135deg, #ff00d4, #ff8c00);
+            --highlight: #ffb300;
+            --text-main: #f1f1f1;
+            --text-muted: #b0b0b0;
+            --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.2);
+            --shadow-dark: 0 15px 35px rgba(0, 0, 0, 0.5);
+            --sidebar-bg: #111;
+            --border-color: #222;
+            --prof-card: rgba(255, 255, 255, 0.05);
+            --semester-active: #ff44cc;
+            --canvas-bg: #1e1e1e;
+        }
+
+        .light-mode {
+            --bg-dark: #f5f5f5;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-hover: rgba(0, 0, 0, 0.05);
+            --accent-primary: #ff00d4;
+            --accent-secondary: #ff8c00;
+            --text-main: #333;
+            --text-muted: #666;
+            --sidebar-bg: #f0f0f0;
+            --border-color: #ddd;
+            --prof-card: #fff;
+            --canvas-bg: #ffffff;
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            padding: 20px 0;
+            border-right: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .sidebar-header p {
+            margin: 5px 0 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .text-none {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+        
+        .text-none:hover {
+            color: var(--accent-primary);
+        }
+        
+        .theme-toggle {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background-color: var(--card-hover);
+        }
+        
+        .theme-toggle i {
+            margin-right: 8px;
+            color: var(--accent-primary);
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        
+        .nav-menu li {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            border-left: 3px solid transparent;
+            color: var(--text-main);
+        }
+        
+        .nav-menu li:hover {
+            background-color: var(--card-hover);
+            transform: translateX(5px);
+        }
+        
+        .nav-menu li.active {
+            background-color: var(--card-hover);
+            border-left: 3px solid var(--accent-primary);
+            transform: translateX(5px);
+        }
+        
+        .nav-menu li i {
+            margin-right: 10px;
+            color: var(--accent-primary);
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background-color: var(--bg-dark);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .page-title {
+            margin: 0;
+            font-size: 2rem;
+            background: var(--gradient-main);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .whiteboard-container {
+            display: flex;
+            flex: 1;
+            gap: 20px;
+            flex-direction: column;
+        }
+        
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .tool-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 10px;
+            background-color: var(--prof-card);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .tool-group label {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        select, button {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background-color: var(--prof-card);
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        button {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        button:hover, select:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+        
+        button.active {
+            background: var(--gradient-main);
+            color: white;
+            border: none;
+        }
+        
+        .color-picker {
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        
+        .color-picker::-webkit-color-swatch {
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+        }
+        
+        .color-picker::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        
+        .content-area {
+            display: flex;
+            flex: 1;
+            gap: 20px;
+            min-height: 0;
+        }
+        
+        #editor {
+            flex: 1;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            overflow-y: auto;
+            outline: none;
+            line-height: 1.6;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        #editor:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 2px rgba(255, 0, 212, 0.2);
+        }
+        
+        .canvas-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            background-color: var(--card-bg);
+            backdrop-filter: blur(10px);
+        }
+        
+        canvas {
+            flex: 1;
+            width: 100%;
+            background-color: var(--canvas-bg);
+            cursor: crosshair;
+            touch-action: none;
+        }
+        
+        .page-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: var(--prof-card);
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .page-indicator {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .action-btn {
+            background: var(--gradient-main);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        @media (max-width: 992px) {
+            .content-area {
+                flex-direction: column;
+            }
+            
+            #editor, .canvas-container {
+                min-height: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 10px;
+            }
+            
+            .nav-menu {
+                display: flex;
+                overflow-x: auto;
+            }
+            
+            .nav-menu li {
+                white-space: nowrap;
+            }
+            
+            .toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Exam Helper</h2>
+                <p>Navigation Menu</p>
+                <div class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                    <span>Dark Mode</span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <a class="text-none" href="index.html"><li class="active"><i class="fas fa-home"></i> Home</li></a>
+                <a class="text-none" href="notes.html"><li><i class="fas fa-book"></i> Study Notes</li></a>
+                <a class="text-none" href="previous.html"><li><i class="fas fa-file-alt"></i> Previous Papers</li></a>
+                <a class="text-none" href="notepad.html"><li><i class="fas fa-chalkboard"></i> Whiteboard</li></a>
+                <a class="text-none" href="quizzes.html"><li><i class="fas fa-question-circle"></i> Quizzes</li></a>
+                <a class="text-none" href="about.html"><li><i class="fas fa-info-circle"></i> About Us</li></a>
+                <a class="text-none" href="discussion.html"><li><i class="fas fa-users"></i> Discussion</li></a>
+                <a class="text-none" href="login.html"><li><i class="fas fa-user"></i>Login</li></a>
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <div class="page-header">
+                <h1 class="page-title">Quick Revision Whiteboard</h1>
+            </div>
+            
+            <div class="whiteboard-container">
+                <div class="toolbar">
+                    <div class="tool-group">
+                        <label>Text Format:</label>
+                        <select id="headingSelect">
+                            <option value="p">Paragraph</option>
+                            <option value="h1">Heading 1</option>
+                            <option value="h2">Heading 2</option>
+                            <option value="h3">Heading 3</option>
+                        </select>
+                    </div>
+                    
+                    <div class="tool-group">
+                        <label>Drawing Tools:</label>
+                        <button id="pencilBtn" class="active" onclick="setTool('pencil')">
+                            <i class="fas fa-pencil-alt"></i> Pencil
+                        </button>
+                        <button id="markerBtn" onclick="setTool('marker')">
+                            <i class="fas fa-marker"></i> Marker
+                        </button>
+                        <button id="highlighterBtn" onclick="setTool('highlighter')">
+                            <i class="fas fa-highlighter"></i> Highlighter
+                        </button>
+                        <button id="eraserBtn" onclick="setTool('eraser')">
+                            <i class="fas fa-eraser"></i> Eraser
+                        </button>
+                    </div>
+                    
+                    <div class="tool-group">
+                        <label>Color:</label>
+                        <input type="color" id="colorPicker" class="color-picker" value="#000000">
+                        <span id="currentColor" style="font-size: 0.8rem;">Black</span>
+                    </div>
+                    
+                    <div class="tool-group">
+                        <label>Size:</label>
+                        <select id="sizeSelect" onchange="changeSize(this.value)">
+                            <option value="1">1px</option>
+                            <option value="3" selected>3px</option>
+                            <option value="5">5px</option>
+                            <option value="8">8px</option>
+                            <option value="12">12px</option>
+                            <option value="15">15px</option>
+                        </select>
+                    </div>
+                    
+                    <button class="action-btn" onclick="clearCanvas()">
+                        <i class="fas fa-trash-alt"></i> Clear Canvas
+                    </button>
+                    <button class="action-btn" onclick="savePage()">
+                        <i class="fas fa-save"></i> Save Page
+                    </button>
+                </div>
+                
+                <div class="content-area">
+                    <div id="editor" contenteditable="true" placeholder="Type your notes here..."></div>
+                    
+                    <div class="canvas-container">
+                        <canvas id="canvas"></canvas>
+                        <div class="page-controls">
+                            <div class="page-indicator">Page <span id="currentPageNum">1</span>/5</div>
+                            <div>
+                                <button class="action-btn" onclick="prevPage()"><i class="fas fa-chevron-left"></i> Previous</button>
+                                <button class="action-btn" onclick="nextPage()">Next <i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Check for saved user preference or use system preference
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'light' || (!savedTheme && !systemPrefersDark)) {
+            body.classList.add('light-mode');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i><span>Light Mode</span>';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i><span>Light Mode</span>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i><span>Dark Mode</span>';
+                localStorage.setItem('theme', 'dark');
+            }
+            
+            // Redraw canvas to adjust to new theme
+            redrawCanvas();
+        });
+        
+        // Whiteboard functionality
+        const editor = document.getElementById('editor');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const colorPicker = document.getElementById('colorPicker');
+        const currentColorSpan = document.getElementById('currentColor');
+        const currentPageNum = document.getElementById('currentPageNum');
+        
+        // Adjust canvas size to container
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight - 40; // Account for page controls
+            redrawCanvas();
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        
+        // Whiteboard state
+        let currentPage = 0;
+        const pages = Array(5).fill().map(() => ({
+            text: '',
+            drawing: null,
+            drawingData: []
+        }));
+        
+        let drawing = false;
+        let tool = 'pencil';
+        let currentColor = '#000000';
+        let lineWidth = 3;
+        let lastX = 0;
+        let lastY = 0;
+        
+        // Tool buttons
+        const toolButtons = {
+            pencil: document.getElementById('pencilBtn'),
+            marker: document.getElementById('markerBtn'),
+            highlighter: document.getElementById('highlighterBtn'),
+            eraser: document.getElementById('eraserBtn')
+        };
+        
+        // Set active tool
+        function setTool(selectedTool) {
+            tool = selectedTool;
+            
+            // Update button states
+            Object.keys(toolButtons).forEach(t => {
+                if (t === selectedTool) {
+                    toolButtons[t].classList.add('active');
+                } else {
+                    toolButtons[t].classList.remove('active');
+                }
+            });
+            
+            // Set default colors for tools
+            switch (tool) {
+                case 'pencil':
+                    colorPicker.value = '#000000';
+                    updateColor('#000000');
+                    break;
+                case 'marker':
+                    colorPicker.value = '#0066cc';
+                    updateColor('#0066cc');
+                    break;
+                case 'highlighter':
+                    colorPicker.value = '#ffe536';
+                    updateColor('#ffe536');
+                    break;
+                case 'eraser':
+                    colorPicker.value = '#ffffff';
+                    updateColor('#ffffff');
+                    break;
+            }
+        }
+        
+        // Update current color
+        function updateColor(color) {
+            currentColor = color;
+            currentColorSpan.textContent = getColorName(color);
+            currentColorSpan.style.color = color;
+        }
+        
+        // Get color name for display
+        function getColorName(hex) {
+            const colors = {
+                '#000000': 'Black',
+                '#0066cc': 'Blue',
+                '#ffe536': 'Highlighter',
+                '#ffffff': 'Eraser'
+            };
+            return colors[hex.toLowerCase()] || hex;
+        }
+        
+        // Change line size
+        function changeSize(size) {
+            lineWidth = parseInt(size);
+        }
+        
+        // Color picker event
+        colorPicker.addEventListener('input', (e) => {
+            updateColor(e.target.value);
+        });
+        
+        // Drawing functions
+        function startDrawing(e) {
+            drawing = true;
+            [lastX, lastY] = getCoordinates(e);
+            
+            // Start new path
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            
+            // Save drawing action
+            pages[currentPage].drawingData.push({
+                type: 'begin',
+                tool,
+                color: currentColor,
+                size: lineWidth,
+                x: lastX,
+                y: lastY
+            });
+        }
+        
+        function draw(e) {
+            if (!drawing) return;
+            
+            const [x, y] = getCoordinates(e);
+            
+            // Set drawing style based on tool
+            switch (tool) {
+                case 'pencil':
+                    ctx.strokeStyle = currentColor;
+                    ctx.lineWidth = lineWidth;
+                    ctx.globalAlpha = 1.0;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                    break;
+                case 'marker':
+                    ctx.strokeStyle = currentColor;
+                    ctx.lineWidth = lineWidth * 2;
+                    ctx.globalAlpha = 0.8;
+                    ctx.lineCap = 'square';
+                    ctx.lineJoin = 'bevel';
+                    break;
+                case 'highlighter':
+                    ctx.strokeStyle = currentColor;
+                    ctx.lineWidth = lineWidth * 3;
+                    ctx.globalAlpha = 0.4;
+                    ctx.lineCap = 'square';
+                    ctx.lineJoin = 'bevel';
+                    break;
+                case 'eraser':
+                    ctx.strokeStyle = body.classList.contains('light-mode') ? '#ffffff' : '#1e1e1e';
+                    ctx.lineWidth = lineWidth * 4;
+                    ctx.globalAlpha = 1.0;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                    break;
+            }
+            
+            // Draw line
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            
+            // Save drawing action
+            pages[currentPage].drawingData.push({
+                type: 'draw',
+                x,
+                y
+            });
+            
+            lastX = x;
+            lastY = y;
+        }
+        
+        function stopDrawing() {
+            if (drawing) {
+                drawing = false;
+                
+                // Save drawing action
+                pages[currentPage].drawingData.push({
+                    type: 'end'
+                });
+            }
+        }
+        
+        function getCoordinates(e) {
+            let clientX, clientY;
+            
+            if (e.type.includes('touch')) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+            
+            const rect = canvas.getBoundingClientRect();
+            return [
+                clientX - rect.left,
+                clientY - rect.top
+            ];
+        }
+        
+        // Clear canvas
+        function clearCanvas() {
+            ctx.fillStyle = body.classList.contains('light-mode') ? '#ffffff' : '#1e1e1e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            pages[currentPage].drawingData = [];
+        }
+        
+        // Redraw canvas from saved data
+        function redrawCanvas() {
+            // Clear canvas with current background color
+            ctx.fillStyle = body.classList.contains('light-mode') ? '#ffffff' : '#1e1e1e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const drawingData = pages[currentPage].drawingData;
+            if (!drawingData || drawingData.length === 0) return;
+            
+            let currentTool = 'pencil';
+            let currentColor = '#000000';
+            let currentSize = 3;
+            
+            for (const action of drawingData) {
+                switch (action.type) {
+                    case 'begin':
+                        currentTool = action.tool;
+                        currentColor = action.color;
+                        currentSize = action.size;
+                        ctx.beginPath();
+                        ctx.moveTo(action.x, action.y);
+                        setContextStyle(currentTool, currentColor, currentSize);
+                        break;
+                    case 'draw':
+                        ctx.lineTo(action.x, action.y);
+                        ctx.stroke();
+                        ctx.beginPath();
+                        ctx.moveTo(action.x, action.y);
+                        break;
+                    case 'end':
+                        // No action needed
+                        break;
+                }
+            }
+        }
+        
+        function setContextStyle(tool, color, size) {
+            switch (tool) {
+                case 'pencil':
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = size;
+                    ctx.globalAlpha = 1.0;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                    break;
+                case 'marker':
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = size * 2;
+                    ctx.globalAlpha = 0.8;
+                    ctx.lineCap = 'square';
+                    ctx.lineJoin = 'bevel';
+                    break;
+                case 'highlighter':
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = size * 3;
+                    ctx.globalAlpha = 0.4;
+                    ctx.lineCap = 'square';
+                    ctx.lineJoin = 'bevel';
+                    break;
+                case 'eraser':
+                    ctx.strokeStyle = body.classList.contains('light-mode') ? '#ffffff' : '#1e1e1e';
+                    ctx.lineWidth = size * 4;
+                    ctx.globalAlpha = 1.0;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                    break;
+            }
+        }
+        
+        // Page navigation
+        function changePage(index) {
+            // Save current page
+            pages[currentPage].text = editor.innerHTML;
+            
+            // Switch to new page
+            currentPage = parseInt(index);
+            currentPageNum.textContent = currentPage + 1;
+            
+            // Load content
+            editor.innerHTML = pages[currentPage].text || '';
+            redrawCanvas();
+        }
+        
+        function prevPage() {
+            if (currentPage > 0) {
+                changePage(currentPage - 1);
+            }
+        }
+        
+        function nextPage() {
+            if (currentPage < pages.length - 1) {
+                changePage(currentPage + 1);
+            }
+        }
+        
+        // Save page content
+        function savePage() {
+            pages[currentPage].text = editor.innerHTML;
+            alert('Page saved successfully!');
+        }
+        
+        // Heading selector
+        document.getElementById('headingSelect').addEventListener('change', function() {
+            document.execCommand('formatBlock', false, this.value);
+            editor.focus();
+        });
+        
+        // Event listeners
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        
+        // Touch support
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startDrawing(e);
+        });
+        
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            draw(e);
+        });
+        
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            stopDrawing();
+        });
+        
+        // Initialize first page
+        window.addEventListener('load', () => {
+            changePage(0);
+            setTool('pencil');
+            // Set initial canvas background
+            ctx.fillStyle = body.classList.contains('light-mode') ? '#ffffff' : '#1e1e1e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        });
+    </script>
+</body>
+</html>

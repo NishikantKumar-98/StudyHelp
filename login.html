@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Jagannath University Exam Helper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --card-hover: rgba(255, 255, 255, 0.2);
+            --accent-primary: #ff44cc;
+            --accent-secondary: #ff6600;
+            --gradient-main: linear-gradient(135deg, #ff00d4, #ff8c00);
+            --highlight: #ffb300;
+            --text-main: #f1f1f1;
+            --text-muted: #b0b0b0;
+            --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.2);
+            --shadow-dark: 0 15px 35px rgba(0, 0, 0, 0.5);
+            --sidebar-bg: #111;
+            --border-color: #222;
+            --prof-card: rgba(255, 255, 255, 0.05);
+            --semester-active: #ff44cc;
+        }
+
+        .light-mode {
+            --bg-dark: #f5f5f5;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-hover: rgba(0, 0, 0, 0.05);
+            --accent-primary: #ff00d4;
+            --accent-secondary: #ff8c00;
+            --text-main: #333;
+            --text-muted: #666;
+            --sidebar-bg: #f0f0f0;
+            --border-color: #ddd;
+            --prof-card: #fff;
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255, 68, 204, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255, 140, 0, 0.1) 0%, transparent 50%);
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            background: var(--gradient-main);
+           background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .login-header p {
+            margin: 10px 0 0;
+            color: var(--text-muted);
+        }
+        
+        .login-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-light);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .login-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .login-tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            position: relative;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+        
+        .login-tab.active {
+            color: var(--accent-primary);
+        }
+        
+        .login-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-main);
+        }
+        
+        .login-tab:hover {
+            color: var(--accent-primary);
+        }
+        
+        .login-form {
+            display: none;
+        }
+        
+        .login-form.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--prof-card);
+            color: var(--text-main);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent-primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 68, 204, 0.2);
+        }
+        
+        .login-btn {
+            background: var(--gradient-main);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            width: 100%;
+            transition: transform 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .forgot-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .theme-toggle:hover {
+            background-color: var(--card-hover);
+        }
+        
+        .theme-toggle i {
+            margin-right: 8px;
+            color: var(--accent-primary);
+        }
+        
+        .university-logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .university-logo img {
+            height: 60px;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+        }
+        
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 15px;
+            }
+            
+            .login-header h1 {
+                font-size: 2rem;
+            }
+            
+            .login-tabs {
+                justify-content: center;
+            }
+            
+            .login-card {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .login-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .login-tab {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .form-control {
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+        <span>Dark Mode</span>
+    </div>
+    
+    <div class="login-container">
+        <div class="university-logo">
+            <img src="studyhelplogo.png" alt="StudyHelp">
+        </div>
+        
+        <div class="login-header">
+            <h1>Welcome Back</h1>
+            <p>Login to access your study resources and exam materials</p>
+        </div>
+        
+        <div class="login-card">
+            <div class="login-tabs">
+                <div class="login-tab active" data-tab="student">Student Login</div>
+                <div class="login-tab" data-tab="teacher">Teacher Login</div>
+            </div>
+            
+            <div class="login-form active" id="student-form">
+                <form id="studentLogin">
+                    <div class="form-group">
+                        <label for="student-enrollment"><i class="fas fa-id-card"></i> Enrollment Number</label>
+                        <input type="text" id="student-enrollment" class="form-control" placeholder="Enter your enrollment number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-password"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="student-password" class="form-control" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Login as Student
+                    </button>
+                    <a href="#" class="forgot-link">Forgot your password?</a>
+                </form>
+            </div>
+            
+            <div class="login-form" id="teacher-form">
+                <form id="teacherLogin">
+                    <div class="form-group">
+                        <label for="teacher-id"><i class="fas fa-user-tie"></i> Faculty ID</label>
+                        <input type="text" id="teacher-id" class="form-control" placeholder="Enter your faculty ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher-password"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="teacher-password" class="form-control" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Login as Teacher
+                    </button>
+                    <a href="#" class="forgot-link">Forgot your password?</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Check for saved user preference or use system preference
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'light' || (!savedTheme && !systemPrefersDark)) {
+            body.classList.add('light-mode');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i><span>Light Mode</span>';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i><span>Light Mode</span>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i><span>Dark Mode</span>';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+        
+        // Tab Switching
+        const tabs = document.querySelectorAll('.login-tab');
+        const forms = document.querySelectorAll('.login-form');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and forms
+                tabs.forEach(t => t.classList.remove('active'));
+                forms.forEach(f => f.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding form
+                tab.classList.add('active');
+                const formId = `${tab.dataset.tab}-form`;
+                document.getElementById(formId).classList.add('active');
+            });
+        });
+        
+        // Form Submission
+        document.getElementById('studentLogin').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const enrollment = document.getElementById('student-enrollment').value;
+            // Here you would typically validate and send to server
+            alert(`Student login attempted with enrollment: ${enrollment}`);
+            // Redirect to home page after successful login
+            window.location.href = 'home.html';
+        });
+        
+        document.getElementById('teacherLogin').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const teacherId = document.getElementById('teacher-id').value;
+            // Here you would typically validate and send to server
+            alert(`Teacher login attempted with ID: ${teacherId}`);
+            // Redirect to teacher dashboard after successful login
+            window.location.href = 'home.html';
+        });
+    </script>
+</body>
+</html>

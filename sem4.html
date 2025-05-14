@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4th Sem Notes | Jagannath University Exam Helper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --card-hover: rgba(255, 255, 255, 0.2);
+            --accent-primary: #ff44cc;
+            --accent-secondary: #ff6600;
+            --gradient-main: linear-gradient(135deg, #ff00d4, #ff8c00);
+            --highlight: #ffb300;
+            --text-main: #f1f1f1;
+            --text-muted: #b0b0b0;
+            --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.2);
+            --shadow-dark: 0 15px 35px rgba(0, 0, 0, 0.5);
+            --sidebar-bg: #111;
+            --border-color: #222;
+            --prof-card: rgba(255, 255, 255, 0.05);
+            --semester-active: #ff44cc;
+        }
+
+        .light-mode {
+            --bg-dark: #f5f5f5;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-hover: rgba(0, 0, 0, 0.05);
+            --accent-primary: #ff00d4;
+            --accent-secondary: #ff8c00;
+            --text-main: #333;
+            --text-muted: #666;
+            --sidebar-bg: #f0f0f0;
+            --border-color: #ddd;
+            --prof-card: #fff;
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            padding: 20px 0;
+            border-right: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .sidebar-header p {
+            margin: 5px 0 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .text-none {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+        
+        .text-none:hover {
+            color: var(--accent-primary);
+        }
+        
+        .theme-toggle {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background-color: var(--card-hover);
+        }
+        
+        .theme-toggle i {
+            margin-right: 8px;
+            color: var(--accent-primary);
+        }
+        
+        .semester-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+            gap: 5px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .semester-tab {
+            padding: 8px 12px;
+            background-color: var(--card-bg);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+        
+        .semester-tab:hover {
+            background-color: var(--accent-primary);
+            color: white;
+        }
+        
+        .semester-tab.active {
+            background-color: var(--semester-active);
+            color: white;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        
+        .nav-menu li {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            border-left: 3px solid transparent;
+            color: var(--text-main);
+        }
+        
+        .nav-menu li:hover {
+            background-color: var(--card-hover);
+            transform: translateX(5px);
+        }
+        
+        .nav-menu li.active {
+            background-color: var(--card-hover);
+            border-left: 3px solid var(--accent-primary);
+            transform: translateX(5px);
+        }
+        
+        .nav-menu li i {
+            margin-right: 10px;
+            color: var(--accent-primary);
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background-color: var(--bg-dark);
+            overflow-y: auto;
+        }
+        
+        .welcome-banner {
+            background: var(--gradient-main);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-light);
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .welcome-banner:hover {
+            box-shadow: var(--shadow-dark);
+        }
+        
+        .welcome-banner h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        
+        .welcome-banner p {
+            margin: 10px 0 0;
+            opacity: 0.9;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .page-title {
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-bar input {
+            padding: 10px 15px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            width: 250px;
+            transition: all 0.3s;
+        }
+        
+        .search-bar input:focus {
+            border-color: var(--accent-primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 68, 204, 0.2);
+        }
+        
+        .search-bar button {
+            background: var(--gradient-main);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .search-bar button:hover {
+            transform: scale(1.05);
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .subject-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: var(--shadow-light);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-dark);
+        }
+        
+        .subject-card h3 {
+            margin-top: 0;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-bottom: 2px solid var(--accent-secondary);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .subject-card h3 i {
+            margin-right: 10px;
+        }
+        
+        .professor-info {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: var(--prof-card);
+            border-radius: 6px;
+        }
+        
+        .professor-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        
+        .professor-details {
+            flex-grow: 1;
+        }
+        
+        .professor-details h4 {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+        
+        .professor-details p {
+            margin: 3px 0 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .social-links a {
+            color: var(--text-main);
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        
+        .social-links a:hover {
+            opacity: 1;
+            color: var(--accent-primary);
+        }
+        
+        .unit-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+        
+        .unit-list li {
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .unit-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .view-btn {
+            background: var(--gradient-main);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: bold;
+        }
+        
+        .view-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .exam-info {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+        
+        .exam-info h3 {
+            margin-top: 0;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .upcoming-exams {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+        
+        .upcoming-exams h3 {
+            margin-top: 0;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .exam-item {
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        
+        .exam-item:last-child {
+            border-bottom: none;
+        }
+        
+        .exam-date {
+            font-weight: bold;
+            color: var(--accent-primary);
+        }
+        
+        .recent-notes {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+        
+        .recent-notes h3 {
+            margin-top: 0;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .note-item {
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border-color);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .note-item:last-child {
+            border-bottom: none;
+        }
+        
+        .tips-section {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+        
+        .tips-section h3 {
+            margin-top: 0;
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .tip-card {
+            background-color: var(--prof-card);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-primary);
+            transition: transform 0.2s, box-shadow 0.3s ease;
+        }
+        
+        .tip-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .tip-card h4 {
+            margin: 0 0 10px 0;
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* PDF Viewer Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+        
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 2% auto;
+            padding: 20px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: auto;
+            box-shadow: var(--shadow-dark);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+        }
+        
+        .close-btn {
+            color: var(--text-main);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .close-btn:hover {
+            color: var(--accent-primary);
+        }
+        
+        .pdf-viewer {
+            width: 100%;
+            height: 75vh;
+            border: 1px solid var(--border-color);
+            margin-top: 15px;
+            border-radius: 10px;
+            background-color: var(--bg-dark);
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .quick-action-btn {
+            background: var(--gradient-main);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .quick-action-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 10px;
+            }
+            
+            .semester-tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+            
+            .nav-menu {
+                display: flex;
+                overflow-x: auto;
+            }
+            
+            .nav-menu li {
+                white-space: nowrap;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-bar {
+                margin-top: 15px;
+                width: 100%;
+            }
+            
+            .search-bar input {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .dashboard-grid, .subject-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Jagannath University</h2>
+                <p>Exam Helper Portal</p>
+                <div class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                    <span>Dark Mode</span>
+                </div>
+            </div>
+            
+            <div class="semester-tabs">
+                <a href="#" class="semester-tab">1st Sem</a>
+                <a href="#" class="semester-tab">2nd Sem</a>
+                <a href="#" class="semester-tab">3rd Sem</a>
+                <a href="sem4.html" class="semester-tab active">4th Sem</a>
+                <a href="#" class="semester-tab">5th Sem</a>
+                <a href="notepad.html" class="semester-tab">6th Sem</a>
+                <a href="#" class="semester-tab">7th Sem</a>
+                <a href="#" class="semester-tab">8th Sem</a>
+            </div>
+            
+            <ul class="nav-menu">
+                <a class="text-none" href="index.html"><li><i class="fas fa-home"></i> Home</li></a>
+                <a class="text-none" href="notes.html"><li class="active"><i class="fas fa-book"></i> Study Notes</li></a>
+                <a class="text-none" href="previous.html"><li><i class="fas fa-file-alt"></i> Previous Papers</li></a>
+                <a class="text-none" href="notepad.html"><li><i class="fas fa-chalkboard"></i> Whiteboard</li></a>
+                <a class="text-none" href="quizzes.html"><li><i class="fas fa-question-circle"></i> Quizzes</li></a>
+                <a class="text-none" href="about.html"><li><i class="fas fa-info-circle"></i> About Us</li></a>
+                <a class="text-none" href="discussion.html"><li><i class="fas fa-users"></i> Discussion</li></a>
+                <a class="text-none" href="login.html"><li><i class="fas fa-user"></i>Login</li></a>
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <div class="welcome-banner">
+                <h1>Welcome, 4th Semester Student</h1>
+                <p>Your elite-level exam prep starts here 🚀</p>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="upcoming-exams">
+                    <h3><i class="fas fa-calendar-alt"></i> Upcoming Exams</h3>
+                    <div class="exam-item">
+                        <div>Probability and Queuing Theory</div>
+                        <div class="exam-date">May 18, 2025</div>
+                    </div>
+                    <div class="exam-item">
+                        <div>Microprocessor & Microcontroller</div>
+                        <div class="exam-date">May 22, 2025</div>
+                    </div>
+                    <div class="exam-item">
+                        <div>Database Management System</div>
+                        <div class="exam-date">May 28, 2025</div>
+                    </div>
+                </div>
+                
+                <div class="exam-info">
+                    <h3><i class="fas fa-info-circle"></i> Exam Pattern</h3>
+                    <p><strong>Total Marks:</strong> 70 | <strong>Questions:</strong> 5/10</p>
+                    <p><strong>Marking:</strong> 14 marks per question</p>
+                    <p><strong>Sections:</strong> 
+                        <ul>
+                            <li>Section A: Attempt any 3 of 5</li>
+                            <li>Section B: Attempt any 2 of 5</li>
+                        </ul>
+                    </p>
+                    <div class="quick-actions">
+                        <button class="quick-action-btn" onclick="openPdf('exam_guidelines.pdf')">
+                            <i class="fas fa-file-pdf"></i> Exam Guidelines
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-book"></i> Study Notes</h1>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search notes...">
+                    <button><i class="fas fa-search"></i> Search</button>
+                </div>
+            </div>
+            
+            <div class="subject-grid">
+                <!-- Probability and Queuing Theory -->
+                <div class="subject-card">
+                    <h3><i class="fas fa-chart-line"></i> BTCSBSC 401 – Probability and Queuing Theory</h3>
+                    
+                    <div class="professor-info">
+                        <div class="professor-details">
+                            <h4>Prof. Aditya Saini</h4>
+                            <p>Assistant Professor</p>
+                        </div>
+                        <div class="social-links">
+                            <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                    
+                    <ul class="unit-list">
+                        <li>Unit 1: Basic Probability <button class="view-btn" onclick="openPdf('pqt_unit1.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 2: Random Variables <button class="view-btn" onclick="openPdf('pqt_unit2.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 3: Queuing Models <button class="view-btn" onclick="openPdf('pqt_unit3.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 4: Markov Chains <button class="view-btn" onclick="openPdf('pqt_unit4.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 5: Applications <button class="view-btn" onclick="openPdf('pqt_unit5.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                    </ul>
+                    <button class="view-btn" style="width: 100%;" onclick="openPdf('pqt_full.pdf')">
+                        <i class="fas fa-download"></i> Download Complete Notes
+                    </button>
+                </div>
+                
+                <!-- Critical Thinking -->
+                <div class="subject-card">
+                    <h3><i class="fas fa-brain"></i> Critical Thinking</h3>
+                    
+                    <div class="professor-info">
+                        <div class="professor-details">
+                            <h4>Prof. Aditya Saini</h4>
+                            <p>Assistant Professor</p>
+                        </div>
+                        <div class="social-links">
+                            <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                    
+                    <ul class="unit-list">
+                        <li>Unit 1: Thinking Fundamentals <button class="view-btn" onclick="openPdf('ct_unit1.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 2: Logical Fallacies <button class="view-btn" onclick="openPdf('ct_unit2.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 3: Argument Analysis <button class="view-btn" onclick="openPdf('ct_unit3.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 4: Decision Making <button class="view-btn" onclick="openPdf('ct_unit4.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 5: Problem Solving <button class="view-btn" onclick="openPdf('ct_unit5.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                    </ul>
+                    <button class="view-btn" style="width: 100%;" onclick="openPdf('ct_full.pdf')">
+                        <i class="fas fa-download"></i> Download Complete Notes
+                    </button>
+                </div>
+                
+                <!-- Microprocessor & Microcontroller -->
+                <div class="subject-card">
+                    <h3><i class="fas fa-microchip"></i> Microprocessor & Microcontroller</h3>
+                    
+                    <div class="professor-info">
+                        <div class="professor-details">
+                            <h4>Prof. Jyoti</h4>
+                            <p>Associate Professor</p>
+                        </div>
+                        <div class="social-links">
+                            <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                    
+                    <ul class="unit-list">
+                        <li>Unit 1: 8085/8086 Architecture <button class="view-btn" onclick="openPdf('mp_unit1.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 2: Assembly Programming <button class="view-btn" onclick="openPdf('mp_unit2.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 3: Interfacing <button class="view-btn" onclick="openPdf('mp_unit3.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 4: 8051 Microcontroller <button class="view-btn" onclick="openPdf('mp_unit4.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 5: Advanced Concepts <button class="view-btn" onclick="openPdf('mp_unit5.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                    </ul>
+                    <button class="view-btn" style="width: 100%;" onclick="openPdf('mp_full.pdf')">
+                        <i class="fas fa-download"></i> Download Complete Notes
+                    </button>
+                </div>
+                
+                <!-- Database Management System -->
+                <div class="subject-card">
+                    <h3><i class="fas fa-database"></i> Database Management System</h3>
+                    
+                    <div class="professor-info">
+                        <div class="professor-details">
+                            <h4>Prof. Renuka</h4>
+                            <p>Assistant Professor</p>
+                        </div>
+                        <div class="social-links">
+                            <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                    
+                    <ul class="unit-list">
+                        <li>Unit 1: Database Concepts <button class="view-btn" onclick="openPdf('dbms_unit1.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 2: Relational Model <button class="view-btn" onclick="openPdf('dbms_unit2.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 3: SQL Programming <button class="view-btn" onclick="openPdf('dbms_unit3.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 4: Normalization <button class="view-btn" onclick="openPdf('dbms_unit4.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 5: Transactions <button class="view-btn" onclick="openPdf('dbms_unit5.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                    </ul>
+                    <button class="view-btn" style="width: 100%;" onclick="openPdf('dbms_full.pdf')">
+                        <i class="fas fa-download"></i> Download Complete Notes
+                    </button>
+                </div>
+                
+                <!-- Theory of Computation -->
+                <div class="subject-card">
+                    <h3><i class="fas fa-project-diagram"></i> Theory of Computation</h3>
+                    
+                    <div class="professor-info">
+                        <div class="professor-details">
+                            <h4>Prof. Kirti</h4>
+                            <p>Associate Professor</p>
+                        </div>
+                        <div class="social-links">
+                            <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                    
+                    <ul class="unit-list">
+                        <li>Unit 1: Automata Theory <button class="view-btn" onclick="openPdf('toc_unit1.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 2: Regular Languages <button class="view-btn" onclick="openPdf('toc_unit2.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 3: Context-Free Grammars <button class="view-btn" onclick="openPdf('toc_unit3.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 4: Turing Machines <button class="view-btn" onclick="openPdf('toc_unit4.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 5: Computability <button class="view-btn" onclick="openPdf('toc_unit5.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                    </ul>
+                    <button class="view-btn" style="width: 100%;" onclick="openPdf('toc_full.pdf')">
+                        <i class="fas fa-download"></i> Download Complete Notes
+                    </button>
+                </div>
+                
+                <!-- Data Communication and Computer Networks -->
+                <div class="subject-card">
+                    <h3><i class="fas fa-network-wired"></i> Data Communication and Computer Networks</h3>
+                    
+                    <div class="professor-info">
+                        <div class="professor-details">
+                            <h4>Prof. Sonika</h4>
+                            <p>Assistant Professor</p>
+                        </div>
+                        <div class="social-links">
+                            <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                    
+                    <ul class="unit-list">
+                        <li>Unit 1: Network Fundamentals <button class="view-btn" onclick="openPdf('dcn_unit1.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 2: Data Link Layer <button class="view-btn" onclick="openPdf('dcn_unit2.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 3: Network Layer <button class="view-btn" onclick="openPdf('dcn_unit3.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 4: Transport Layer <button class="view-btn" onclick="openPdf('dcn_unit4.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 5: Application Layer <button class="view-btn" onclick="openPdf('dcn_unit5.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                    </ul>
+                    <button class="view-btn" style="width: 100%;" onclick="openPdf('dcn_full.pdf')">
+                        <i class="fas fa-download"></i> Download Complete Notes
+                    </button>
+                </div>
+                
+                <!-- Web Development -->
+                <div class="subject-card">
+                    <h3><i class="fas fa-code"></i> Web Development</h3>
+                    
+                    <div class="professor-info">
+                        <div class="professor-details">
+                            <h4>Prof. Amit Punia</h4>
+                            <p>Assistant Professor</p>
+                        </div>
+                        <div class="social-links">
+                            <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                    
+                    <ul class="unit-list">
+                        <li>Unit 1: HTML & CSS <button class="view-btn" onclick="openPdf('web_unit1.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 2: JavaScript <button class="view-btn" onclick="openPdf('web_unit2.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 3: Frontend Frameworks <button class="view-btn" onclick="openPdf('web_unit3.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 4: Backend Development <button class="view-btn" onclick="openPdf('web_unit4.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                        <li>Unit 5: Web Security <button class="view-btn" onclick="openPdf='web_unit5.pdf')"><i class="fas fa-eye"></i> View</button></li>
+                    </ul>
+                    <button class="view-btn" style="width: 100%;" onclick="openPdf('web_full.pdf')">
+                        <i class="fas fa-download"></i> Download Complete Notes
+                    </button>
+                </div>
+            </div>
+        <div class="tips-section">
+                <h3><i class="fas fa-lightbulb"></i> Study Tips</h3>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h4><i class="fas fa-clock"></i> Time Management</h4>
+                        <p>Use the Pomodoro technique - 25 minutes focused study with 5 minute breaks.</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4><i class="fas fa-book"></i> Active Recall</h4>
+                        <p>Test yourself frequently instead of passive re-reading for better retention.</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4><i class="fas fa-project-diagram"></i> Mind Mapping</h4>
+                        <p>Create visual diagrams to connect concepts and improve understanding.</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4><i class="fas fa-users"></i> Group Study</h4>
+                        <p>Explain concepts to peers to reinforce your own understanding.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- PDF Viewer Modal -->
+    <div id="pdfModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3 id="pdfTitle">PDF Viewer</h3>
+            <iframe id="pdfViewer" class="pdf-viewer" src="" frameborder="0"></iframe>
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="downloadPdf()">
+                    <i class="fas fa-download"></i> Download
+                </button>
+                <button class="quick-action-btn" onclick="printPdf()">
+                    <i class="fas fa-print"></i> Print
+                </button>
+            </div>
+        </div>
+    </div>
+<script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i><span>Light Mode</span>';
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i><span>Dark Mode</span>';
+            }
+        });
+        
+        // PDF Viewer Functions
+        function openPdf(pdfUrl) {
+            const modal = document.getElementById('pdfModal');
+            const pdfViewer = document.getElementById('pdfViewer');
+            const pdfTitle = document.getElementById('pdfTitle');
+            
+            pdfTitle.textContent = pdfUrl.replace('.pdf', '').replace(/_/g, ' ');
+            pdfViewer.src = `pdfs/${pdfUrl}`;
+            modal.style.display = 'block';
+        }
+        
+        function closeModal() {
+            document.getElementById('pdfModal').style.display = 'none';
+            document.getElementById('pdfViewer').src = '';
+        }
+        
+        function downloadPdf() {
+            const pdfUrl = document.getElementById('pdfViewer').src;
+            const link = document.createElement('a');
+            link.href = pdfUrl;
+            link.download = pdfUrl.split('/').pop();
+            link.click();
+        }
+        
+        function printPdf() {
+            const pdfViewer = document.getElementById('pdfViewer');
+            pdfViewer.contentWindow.print();
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('pdfModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
+        

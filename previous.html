@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Previous Papers | Jagannath University</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --card-hover: rgba(255, 255, 255, 0.2);
+            --accent-primary: #ff44cc;
+            --accent-secondary: #ff6600;
+            --gradient-main: linear-gradient(135deg, #ff00d4, #ff8c00);
+            --highlight: #ffb300;
+            --text-main: #f1f1f1;
+            --text-muted: #b0b0b0;
+            --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.2);
+            --shadow-dark: 0 15px 35px rgba(0, 0, 0, 0.5);
+            --sidebar-bg: #111;
+            --border-color: #222;
+            --prof-card: rgba(255, 255, 255, 0.05);
+            --semester-active: #ff44cc;
+            --table-header: rgba(255, 0, 212, 0.2);
+            --table-row-even: rgba(255, 255, 255, 0.03);
+            --table-row-hover: rgba(255, 255, 255, 0.07);
+        }
+
+        .light-mode {
+            --bg-dark: #f5f5f5;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-hover: rgba(0, 0, 0, 0.05);
+            --accent-primary: #ff00d4;
+            --accent-secondary: #ff8c00;
+            --text-main: #333;
+            --text-muted: #666;
+            --sidebar-bg: #f0f0f0;
+            --border-color: #ddd;
+            --prof-card: #fff;
+            --table-header: rgba(255, 0, 212, 0.1);
+            --table-row-even: rgba(0, 0, 0, 0.03);
+            --table-row-hover: rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            padding: 20px 0;
+            border-right: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .sidebar-header p {
+            margin: 5px 0 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .text-none {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+        
+        .text-none:hover {
+            color: var(--accent-primary);
+        }
+        
+        .theme-toggle {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 20px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background-color: var(--card-hover);
+        }
+        
+        .theme-toggle i {
+            margin-right: 8px;
+            color: var(--accent-primary);
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        
+        .nav-menu li {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            border-left: 3px solid transparent;
+            color: var(--text-main);
+        }
+        
+        .nav-menu li:hover {
+            background-color: var(--card-hover);
+            transform: translateX(5px);
+        }
+        
+        .nav-menu li.active {
+            background-color: var(--card-hover);
+            border-left: 3px solid var(--accent-primary);
+            transform: translateX(5px);
+        }
+        
+        .nav-menu li i {
+            margin-right: 10px;
+            color: var(--accent-primary);
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background-color: var(--bg-dark);
+            overflow-y: auto;
+        }
+        
+        h1 {
+            color: var(--text-main);
+            text-align: center;
+            margin-bottom: 30px;
+            background: var(--gradient-main);
+           background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .filter-container {
+            width: 100%;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        .filter-group {
+            flex: 1;
+        }
+        
+        .filter-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--accent-primary);
+        }
+        
+        .filter-select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            font-weight: 500;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 2px rgba(255, 0, 212, 0.2);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+        }
+        
+        th {
+            background-color: var(--table-header);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        tr:nth-child(even) {
+            background-color: var(--table-row-even);
+        }
+        
+        tr:hover {
+            background-color: var(--table-row-hover);
+        }
+        
+        .download-btn {
+            background: var(--gradient-main);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .subject-code {
+            color: var(--text-muted);
+            font-size: 0.85em;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: var(--accent-primary);
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 10px;
+            }
+            
+            .nav-menu {
+                display: flex;
+                overflow-x: auto;
+            }
+            
+            .nav-menu li {
+                white-space: nowrap;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Exam Helper</h2>
+                <p>Navigation Menu</p>
+                <div class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                    <span>Dark Mode</span>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <a class="text-none" href="index.html"><li><i class="fas fa-home"></i> Home</li></a>
+                <a class="text-none" href="notes.html"><li><i class="fas fa-book"></i> Study Notes</li></a>
+                <a class="text-none" href="previous.html"><li class="active"><i class="fas fa-file-alt"></i> Previous Papers</li></a>
+                <a class="text-none" href="notepad.html"><li><i class="fas fa-chalkboard"></i> Whiteboard</li></a>
+                <a class="text-none" href="quizzes.html"><li><i class="fas fa-question-circle"></i> Quizzes</li></a>
+                <a class="text-none" href="about.html"><li><i class="fas fa-info-circle"></i> About Us</li></a>
+                <a class="text-none" href="discussion.html"><li><i class="fas fa-users"></i> Discussion</li></a>
+                <a class="text-none" href="login.html"><li><i class="fas fa-user"></i> Login</li></a>
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <h1>University Previous Papers</h1>
+            
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label for="courseFilter" class="filter-label">Select Course:</label>
+                    <select id="courseFilter" class="filter-select" onchange="filterPapers()">
+                        <option value="all">All Courses</option>
+                        <option value="btech-cse">B.Tech CSE</option>
+                        <option value="btech-it">B.Tech IT</option>
+                        <option value="btech-eee">B.Tech EEE</option>
+                        <option value="mca">MCA</option>
+                        <option value="mba">MBA</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="semesterFilter" class="filter-label">Select Semester:</label>
+                    <select id="semesterFilter" class="filter-select" onchange="filterPapers()">
+                        <option value="all">All Semesters</option>
+                        <option value="2">Semester II</option>
+                        <option value="4">Semester IV</option>
+                        <option value="6">Semester VI</option>
+                        <option value="8">Semester VIII</option>
+                    </select>
+                </div>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Code</th>
+                        <th>Course</th>
+                        <th>Semester</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody id="papersTable">
+                    <!-- B.Tech CSE Papers -->
+                    <!-- Semester II -->
+                    <tr data-course="btech-cse" data-semester="2">
+                        <td>Environment Studies</td>
+                        <td class="subject-code">BTVAC 206</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester II</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="2">
+                        <td>Engineering Mathematics II</td>
+                        <td class="subject-code">BTBSC 201</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester II</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="2">
+                        <td>Engineering Chemistry</td>
+                        <td class="subject-code">BTBSC 202A</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester II</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="2">
+                        <td>Basic Mechanical Engineering</td>
+                        <td class="subject-code">BTESC 204</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester II</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="2">
+                        <td>Basic Civil Engineering</td>
+                        <td class="subject-code">BTECSC 205B</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester II</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="2">
+                        <td>Universal Human Values</td>
+                        <td class="subject-code">BTHSMC 203</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester II</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    
+                    <!-- Semester IV -->
+                    <tr data-course="btech-cse" data-semester="4">
+                        <td>Probability and Queuing Theory</td>
+                        <td class="subject-code">BTCSBSC 401</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester IV</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="4">
+                        <td>Critical Thinking</td>
+                        <td class="subject-code">BTCSHSMC 402</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester IV</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="4">
+                        <td>Microprocessor & Microcontroller</td>
+                        <td class="subject-code">BTCSESC 403</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester IV</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="4">
+                        <td>Database Management System</td>
+                        <td class="subject-code">BTCSPCC 404</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester IV</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="4">
+                        <td>Theory of Computation</td>
+                        <td class="subject-code">BTCSPCC 405</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester IV</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="4">
+                        <td>Data Communication and Computer Networks</td>
+                        <td class="subject-code">BTCSPCC 406</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester IV</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="4">
+                        <td>Web Development</td>
+                        <td class="subject-code">BTCSVAC 407</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester IV</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    
+                    <!-- Semester VI -->
+                    <tr data-course="btech-cse" data-semester="6">
+                        <td>Digital Image Processing</td>
+                        <td class="subject-code">BTCSESC 601</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester VI</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="6">
+                        <td>Machine Learning</td>
+                        <td class="subject-code">BTCSPCC 602</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester VI</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="6">
+                        <td>Information Security System</td>
+                        <td class="subject-code">BTCSPCC 603</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester VI</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="6">
+                        <td>Computer Architecture and Organization</td>
+                        <td class="subject-code">BTCSPCC 604</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester VI</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="6">
+                        <td>Artificial Intelligence</td>
+                        <td class="subject-code">BTCSPCC 605</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester VI</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="6">
+                        <td>Cloud Computing</td>
+                        <td class="subject-code">BTCSPCC 606</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester VI</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="6">
+                        <td>E-Commerce & ERP</td>
+                        <td class="subject-code">BTCSPEC 607C</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester VI</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    
+                    <!-- Semester VIII -->
+                    <tr data-course="btech-cse" data-semester="8">
+                        <td>Data Mining</td>
+                        <td class="subject-code">BTCS 801C</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester VIII</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="8">
+                        <td>Machine Learning</td>
+                        <td class="subject-code">BTCS 802A</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester VIII</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="btech-cse" data-semester="8">
+                        <td>Cyber Law and Ethics</td>
+                        <td class="subject-code">BTCS 803C</td>
+                        <td>B.Tech CSE</td>
+                        <td>Semester VIII</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    
+                    <!-- Sample papers from other courses -->
+                    <tr data-course="btech-it" data-semester="4">
+                        <td>Software Engineering</td>
+                        <td class="subject-code">BTITPCC 404</td>
+                        <td>B.Tech IT</td>
+                        <td>Semester IV</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="mca" data-semester="2">
+                        <td>Object Oriented Programming</td>
+                        <td class="subject-code">MCAPCC 202</td>
+                        <td>MCA</td>
+                        <td>Semester II</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                    <tr data-course="mba" data-semester="1">
+                        <td>Business Economics</td>
+                        <td class="subject-code">MBAPCC 101</td>
+                        <td>MBA</td>
+                        <td>Semester I</td>
+                        <td><a href="#" class="download-btn"><i class="fas fa-download"></i> Download</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="noResults" class="no-results hidden">
+                No papers found matching your selection. Try different filters.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Check for saved user preference or use system preference
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'light' || (!savedTheme && !systemPrefersDark)) {
+            body.classList.add('light-mode');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i><span>Light Mode</span>';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i><span>Light Mode</span>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i><span>Dark Mode</span>';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+        
+        // Paper filtering functionality
+        function filterPapers() {
+            const selectedCourse = document.getElementById('courseFilter').value;
+            const selectedSemester = document.getElementById('semesterFilter').value;
+            const rows = document.querySelectorAll('#papersTable tr');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                const courseMatch = selectedCourse === 'all' || row.getAttribute('data-course') === selectedCourse;
+                const semesterMatch = selectedSemester === 'all' || row.getAttribute('data-semester') === selectedSemester;
+                
+                if (courseMatch && semesterMatch) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // Show/hide no results message
+            const noResults = document.getElementById('noResults');
+            if (visibleCount === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+        }
+        
+        // Initialize by showing all papers
+        document.addEventListener('DOMContentLoaded', filterPapers);
+    </script>
+</body>
+</html>
