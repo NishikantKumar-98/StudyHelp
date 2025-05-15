@@ -972,14 +972,15 @@
         
         // PDF Viewer Functions
         function openPdf(pdfUrl) {
-            const modal = document.getElementById('pdfModal');
-            const pdfViewer = document.getElementById('pdfViewer');
-            const pdfTitle = document.getElementById('pdfTitle');
-            
-            pdfTitle.textContent = pdfUrl.replace('.pdf', '').replace(/_/g, ' ');
-            pdfViewer.src = `pdfs/${pdfUrl}`;
-            modal.style.display = 'block';
-        }
+    console.log(`Opening PDF: ${pdfUrl}`); // Debug log
+    const modal = document.getElementById('pdfModal');
+    const pdfViewer = document.getElementById('pdfViewer');
+    const pdfTitle = document.getElementById('pdfTitle');
+    
+    pdfTitle.textContent = pdfUrl.replace('.pdf', '').replace(/_/g, ' ');
+    pdfViewer.src = pdfUrl; // Directly use the file name
+    modal.style.display = 'block';
+}
         
         function closeModal() {
             document.getElementById('pdfModal').style.display = 'none';
